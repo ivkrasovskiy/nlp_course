@@ -1,0 +1,22 @@
+version: '2.3'
+services:
+  nlp-course:
+    runtime: nvidia
+    image: nlp-course
+    container_name: nlp-course
+    environment:
+      - TZ=MSK
+      - DISPLAY=$DISPLAY
+      - PASSWORD=$JUPYTER_PASSWORD
+      - DS_VERTICA_USERNAME=$DS_VERTICA_USERNAME
+      - DS_VERTICA_PASSWORD=$DS_VERTICA_PASSWORD
+      - DS_VERTICA_PORT=$DS_VERTICA_PORT
+    ports:
+      - "8999:8888"
+    volumes:
+      - ./:/app
+#      - /home/ivkrasovskiy/data:/data
+    ipc: host
+    shm_size: 16G
+    command: /bin/bash -c "cd / && jupyter notebook --allow-root --ip=0.0.0.0 --no-browser"
+    restart: unless-stopped

@@ -20,18 +20,15 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted 
                        graphviz \
                        gcc \
                        g++ && \
-    ln -s /usr/bin/swig3.0 /usr/bin/swig
+    ln -s /usr/bin/swig3.0 /usr/bin/swig && \
+    jupyter contrib nbextension install --user && \
+    jupyter nbextensions_configurator enable --user && \
+    jupyter nbextension enable --py widgetsnbextension
 
 COPY ./requirements.txt .
 
-RUN pip3 install --upgrade pip==21.0.1 && \
+RUN pip3 install --upgrade pip==19.3.1 && \
     pip3  install --no-deps -r requirements.txt && \
     python3 -m ipykernel.kernelspec
 
-
-EXPOSE 8888
-VOLUME /notebooks
-WORKDIR /notebooks
-
-COPY run_jupyter.sh /
-CMD ["/run_jupyter.sh"]
+COPY . $PROJECT_ROOT2
